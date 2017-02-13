@@ -1,3 +1,4 @@
+cordova.define("cordova-plugin-file-transfer.FileTransfer", function(require, exports, module) {
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -110,6 +111,7 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
     var chunkedMode = true;
     var headers = null;
     var httpMethod = null;
+	var fileSize = -1;
     var basicAuthHeader = getBasicAuthHeader(server);
     if (basicAuthHeader) {
         server = server.replace(getUrlCredentials(server) + '@', '');
@@ -124,6 +126,7 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
         fileName = options.fileName;
         mimeType = options.mimeType;
         headers = options.headers;
+		fileSize = options.fileSize || -1;
         httpMethod = options.httpMethod || "POST";
         if (httpMethod.toUpperCase() == "PUT"){
             httpMethod = "PUT";
@@ -163,7 +166,7 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
             }
         }
     };
-    exec(win, fail, 'FileTransfer', 'upload', [filePath, server, fileKey, fileName, mimeType, params, trustAllHosts, chunkedMode, headers, this._id, httpMethod]);
+    exec(win, fail, 'FileTransfer', 'upload', [filePath, server, fileKey, fileName, mimeType, params, trustAllHosts, chunkedMode, headers, this._id, httpMethod, fileSize]);
 };
 
 /**
@@ -237,3 +240,5 @@ FileTransfer.prototype.abort = function() {
 };
 
 module.exports = FileTransfer;
+
+});

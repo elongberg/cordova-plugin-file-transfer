@@ -19,6 +19,9 @@
 #
 -->
 # Release Notes
+### 1.6.2 (Feb 13, 2017)
+* (android): Added support for providing fileSize of upload (fixes issue when we can't read file size)
+* (android): Ensures using provided chunkedMode parameter (at cost of possible errors, like https or older OS versions)
                                               
 ### 1.6.1 (Dec 07, 2016)
 * [CB-12224](https://issues.apache.org/jira/browse/CB-12224) Updated version and RELEASENOTES.md for release 1.6.1
