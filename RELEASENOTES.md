@@ -19,6 +19,9 @@
 #
 -->
 # Release Notes
+### 1.6.3 (Feb 22, 2017)
+* (windows): Fixed some possible "The parameter is incorrect" errors in file uploading
+
 ### 1.6.2 (Feb 13, 2017)
 * (android): Added support for providing fileSize of upload (fixes issue when we can't read file size)
 * (android): Ensures using provided chunkedMode parameter (at cost of possible errors, like https or older OS versions)

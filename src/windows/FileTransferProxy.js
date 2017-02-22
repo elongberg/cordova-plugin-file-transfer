@@ -304,24 +304,28 @@ exec(win, fail, 'FileTransfer', 'upload',
             return;
         }
 
+        method = Windows.Storage.StorageFile.getFileFromPathAsync;
         if (filePath.substr(0, 8) === "file:///") {
             filePath = appData.localFolder.path + filePath.substr(8).split("/").join("\\");
+            filePath = cordovaPathToNative(filePath);
         } else if (filePath.indexOf('ms-appdata:///') === 0) {
-            // Handle 'ms-appdata' scheme
             filePath = filePath.replace('ms-appdata:///local', appData.localFolder.path)
                                .replace('ms-appdata:///temp', appData.temporaryFolder.path);
+            filePath = cordovaPathToNative(filePath);
         } else if (filePath.indexOf('cdvfile://') === 0) {
             filePath = filePath.replace('cdvfile://localhost/persistent', appData.localFolder.path)
                                .replace('cdvfile://localhost/temporary', appData.temporaryFolder.path);
+            filePath = cordovaPathToNative(filePath);
+        } else if (filePath.indexOf('ms-appx:///') === 0) {
+            // This (and possibly others?) require a different method
+            filePath = new Windows.Foundation.Uri(filePath);
+            method = Windows.Storage.StorageFile.getFileFromApplicationUriAsync;
         }
-
-        // normalize path separators
-        filePath = cordovaPathToNative(filePath);
 
         // Create internal download operation object
         fileTransferOps[uploadId] = new FileTransferOperation(FileTransferOperation.PENDING, null);
 
-        Windows.Storage.StorageFile.getFileFromPathAsync(filePath)
+        method(filePath)
         .then(function (storageFile) {
 
             if (!fileName) {
